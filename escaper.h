@@ -56,7 +56,7 @@ EscaperErrorCode escaperDestroy(Escaper escaper);
  * @return POSITIVE NUMBER - if the first escaper's email is lexicographically
  *          bigger than the second escaper's email
  */
-int companyCompareElements(SetElement escaper_1, SetElement escaper_2);
+int escaperCompareElements(SetElement escaper_1, SetElement escaper_2);
 
 /**
  * frees all relevant allocated memory of a specific escaper element
@@ -65,7 +65,7 @@ int companyCompareElements(SetElement escaper_1, SetElement escaper_2);
  *         ESCAPER_INVALID_PARAMETER - one of the parameters was invalid
  *         ESCAPER_EMAIL_DOES_NOT_EXIST - the given email wasn't recognized
  */
-EscaperErrorCode escaperFreeElement(SetElement company);
+void escaperFreeElement(SetElement escaper);
 
 /**
  * receives a source escaper element and copies it's data into a newly created
