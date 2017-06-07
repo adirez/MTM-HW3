@@ -49,7 +49,7 @@ typedef enum ListResult_t {
 } ListResult;
 
 /** Element data type for list container */
-typedef void* ListElement;
+typedef void *ListElement;
 
 /**
 * Type of function for copying an element of the list.
@@ -93,11 +93,11 @@ typedef int(*CompareListElements)(ListElement, ListElement);
 * Use this type to pass extra information needed by the filtering function
 * when calling listFilter. (See the example for a FilterListElement function)
 */
-typedef void* ListFilterKey;
+typedef void *ListFilterKey;
 
 /**
 * Function used for creating a filtered copy of a list.
-* A element is said to pass filtering if the function returns true
+* An element is said to pass filtering if the function returns true
 * For example, the following function can be used to filter a list of strings
 * from short strings:
 * @code
@@ -164,7 +164,7 @@ int listGetSize(List list);
 * The list has an internal iterator (also called current element) to allow
 * iteration over the list's elements. This function sets the iterator to point
 * to the first element in the list and return it.
-* Use this to start iteraing over the list, searching from the beginning of
+* Use this to start iterating over the list, searching from the beginning of
 * the list and/or get the first element in the list.
 * (To continue iteration use listGetNext)
 * @code
@@ -177,7 +177,7 @@ int listGetSize(List list);
 * @param list The list for which to set the iterator and return the first
 * element.
 * @return
-* NULL is a NULL pointer was sent or the list is empty.
+* NULL if a NULL pointer was sent or the list is empty.
 * The first element of the list otherwise
 */
 ListElement listGetFirst(List list);
@@ -365,7 +365,7 @@ void listDestroy(List list);
 *
 * Declares a new variable to hold each element of the list.
 * Use this macro for iterating through the list conveniently.
-* Note that this mcaro modifies the internal iterator.
+* Note that this macro modifies the internal iterator.
 * For example, the following code will go through a list of strings and print
 * them to the standard output:
 * @code
@@ -380,9 +380,9 @@ void listDestroy(List list);
 * @param iterator The name of the variable to hold the next list element
 * @param list the list to iterate over
 */
-#define LIST_FOREACH(type,iterator,list) \
-	for(type iterator = listGetFirst(list) ; \
-		iterator ;\
-		iterator = listGetNext(list))
+#define LIST_FOREACH(type, iterator, list) \
+    for(type iterator = listGetFirst(list) ; \
+        iterator ;\
+        iterator = listGetNext(list))
 
 #endif /* LIST_H_ */
