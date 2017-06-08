@@ -130,4 +130,16 @@ char* companyGetEmail (Company company, CompanyErrorCode *CompanyError);
  */
 TechnionFaculty companyGetFaculty(Company company,
                                   CompanyErrorCode *CompanyError);
+
+/**
+ * receives a company and a room id and iterates over the company's rooms to
+ * check if a room with the received id exists
+ * @param company - the company to be checked
+ * @param room_id - the id we're looking for
+ * @param CompanyError - a type to return the result of the function
+ * @return a pointer to the room if exists, else NULL
+ */
+Room companyFindRoom(Company company, int room_id,
+                     CompanyErrorCode *CompanyError);
+
 #endif //ESCAPETECHNION_COMPANY_H

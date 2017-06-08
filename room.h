@@ -139,5 +139,15 @@ int roomGetOpeningTime(Room room, RoomErrorCode *RoomError);
  */
 int roomGetClosingTime(Room room, RoomErrorCode *RoomError);
 
+/**
+ * receives a room and an id and returns true if the room's id is the received
+ * id
+ * @param room - the room to be checked
+ * @param id - the id we're looking for
+ * @param RoomError - a type to get the result of the function
+ * @return true - if the room's id equals 'id'
+ *         false - if the room's id is different than 'id'
+ */
+bool isRoomID(Room room, int id, RoomErrorCode *RoomError);
 
 #endif //HW3_ROOM_H

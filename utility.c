@@ -39,7 +39,7 @@ bool isEmailValid(char *email) {
     return false;
 }
 
-bool isFacultyValid (TechnionFaculty Faculty) {
+bool isFacultyValid(TechnionFaculty Faculty) {
     if (Faculty < CIVIL_ENGINEERING || Faculty >= UNKNOWN) {
         return false;
     }
@@ -47,7 +47,7 @@ bool isFacultyValid (TechnionFaculty Faculty) {
     return true;
 }
 
-bool getHoursFromStr (char *hours_str, int *opening_time, int* closing_time) {
+bool getHoursFromStr(char *hours_str, int *opening_time, int* closing_time) {
     int tmp_opening = 0, tmp_closing = 0;
     if (NULL == hours_str || strlen(hours_str) != HOURS_STR_LEN) {
         return false;
@@ -85,7 +85,7 @@ bool getHoursFromStr (char *hours_str, int *opening_time, int* closing_time) {
     return true;
 }
 
-bool GetDayAndHourFromStr (char *src_str, int *day, int *hour) {
+bool GetDayAndHourFromStr(char *src_str, int *day, int *hour) {
     int tmp_day = 0, tmp_hour = 0, idx = 0, len = 0;
     if (NULL == src_str || strlen(src_str) < DAY_HOUR_MIN_LEN) {
         return false;
@@ -142,4 +142,11 @@ bool GetDayAndHourFromStr (char *src_str, int *day, int *hour) {
     *day = tmp_day;
     *hour = tmp_hour;
     return true;
+}
+
+void initializeArr(int *arr, int n) {
+    for (int idx = 0; idx < n ; idx++) {
+        *(arr + idx) = 0;
+    }
+    return;
 }

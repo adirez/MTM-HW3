@@ -62,10 +62,6 @@ ReservationErrorCode reservationDestroy(Reservation reservation);
  * @param reservation_2 - the second reservation
  * @return 0 - if the reservations are identical (by all fields)
  */
-/*
-int reservationCompareElements(ListElement reservation_1,
-                               ListElement reservation_2);
-*/
 
 /**
  * frees all relevant allocated memory of a specific escaper element

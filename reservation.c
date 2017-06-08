@@ -115,9 +115,6 @@ ReservationErrorCode reservationDestroy(Reservation reservation) {
     free(reservation);
     return RESERVATION_SUCCESS;
 }
-/*
-int reservationCompareElements(ListElement reservation_1, ListElement reservation_2);
-*/
 
 void reservationFreeElement(ListElement reservation) {
     if (NULL == reservation) {

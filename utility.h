@@ -16,7 +16,7 @@ bool isEmailValid(char *email);
  * @return true - if it's mentioned in the listed faculties
  *         false - it is not mentioned in the listed faculties
  */
-bool isFacultyValid (TechnionFaculty Faculty);
+bool isFacultyValid(TechnionFaculty Faculty);
 
 /**
  * receives a string representing operation hours in the format "hh-hh" and
@@ -28,7 +28,7 @@ bool isFacultyValid (TechnionFaculty Faculty);
  *         false - if the string contains illegal chars, too short / long or if
  *         it is NULL
  */
-bool getHoursFromStr (char *hours_str, int *opening_time, int* closing_time);
+bool getHoursFromStr(char *hours_str, int *opening_time, int *closing_time);
 
 /**
  * receives a string representing a day and an hour in the format "dd-hh" and
@@ -40,4 +40,11 @@ bool getHoursFromStr (char *hours_str, int *opening_time, int* closing_time);
  *         false - if the string contains illegal chars, too short / long or if
  *         it is NULL
  */
-bool GetDayAndHourFromStr (char *src_str, int *day, int *hour);
+bool GetDayAndHourFromStr(char *src_str, int *day, int *hour);
+
+/**
+ * receives an array and initializes the values to '0'
+ * @param arr - the array to be reset
+ * @param n - array length
+ */
+void initializeArr(int *arr, int n);
