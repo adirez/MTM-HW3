@@ -45,7 +45,7 @@ static void freeStudent(ListElement element) {
 
     Student student = element;
 
-    free(student->name);
+   // free(student->name);
     free(student);
 }
 
