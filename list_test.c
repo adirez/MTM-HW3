@@ -19,7 +19,7 @@ static Student studentCreate(int id, char *name, double average) {
         return NULL;
     }
     student->id = id;
-    student->name = malloc(sizeof(strlen(name) + 1));
+    student->name = malloc(strlen(name) + 1);
     if (student->name == NULL) {
         free(student);
         return NULL;
@@ -111,6 +111,9 @@ static bool testListCopy() {
     listGetNext(list);
 
     List list_copy = listCopy(list);
+    //test that the iterator is not pointed to the source list
+    ASSERT_TEST(listGetCurrent(list) != listGetCurrent(list_copy));
+
     //test that the iterator is on the same element and the copied elements
     // are equal and in the same order
     Student test_student = listGetCurrent(list_copy);
@@ -123,6 +126,7 @@ static bool testListCopy() {
     ASSERT_TEST(strcmp(test_student->name, name[0]) == 0);
     ASSERT_TEST(test_student->average == average[0]);
 
+
     //test the infrastructure functions of the copied list: copy and free
     List list_copy_of_copy = listCopy(list_copy);
     test_student = listGetCurrent(list_copy_of_copy);
@@ -134,6 +138,9 @@ static bool testListCopy() {
     listDestroy(list);
     listDestroy(list_copy);
     listDestroy(list_copy_of_copy);
+
+    freeStudent(student0);
+    freeStudent(student1);
     return true;
 }
 
@@ -164,6 +171,9 @@ static bool testListGetSize() {
     ASSERT_TEST(listGetSize(list) == 0);
 
     listDestroy(list);
+
+    freeStudent(student0);
+    freeStudent(student1);
     return true;
 }
 
@@ -199,6 +209,10 @@ static bool testListGetFirst() {
     ASSERT_TEST(test_student->id == id[2]);
 
     listDestroy(list);
+
+    freeStudent(student0);
+    freeStudent(student1);
+    freeStudent(student2);
     return true;
 }
 
@@ -237,6 +251,11 @@ static bool testListGetNext() {
     ASSERT_TEST(test_student->id == id[2]);
 
     listDestroy(list);
+
+    freeStudent(student0);
+    freeStudent(student1);
+    freeStudent(student2);
+    freeStudent(student3);
     return true;
 }
 
@@ -276,6 +295,11 @@ static bool testListGetCurrent() {
     ASSERT_TEST(test_student->id == id[0]);
 
     listDestroy(list);
+
+    freeStudent(student0);
+    freeStudent(student1);
+    freeStudent(student2);
+    freeStudent(student3);
     return true;
 }
 
@@ -292,9 +316,7 @@ static bool testListInsertFirst() {
     //test return value for NULL params and list size
     ASSERT_TEST(listInsertFirst(NULL, NULL) == LIST_NULL_ARGUMENT);
     ASSERT_TEST(listInsertFirst(NULL, student0) == LIST_NULL_ARGUMENT);
-
-    //TODO: change
-//    ASSERT_TEST(listInsertFirst(list, NULL) == LIST_NULL_ARGUMENT);
+    ASSERT_TEST(listInsertFirst(list, NULL) == LIST_OUT_OF_MEMORY);
     ASSERT_TEST(listGetSize(list) == 0);
 
     //insert an element to the list and test all its fields
@@ -317,6 +339,10 @@ static bool testListInsertFirst() {
     ASSERT_TEST(listGetSize(list) == 3);
 
     listDestroy(list);
+
+    freeStudent(student0);
+    freeStudent(student1);
+    freeStudent(student2);
     return true;
 }
 
@@ -332,8 +358,7 @@ static bool testListInsertLast() {
     //test return value for NULL params and list size
     ASSERT_TEST(listInsertLast(NULL, NULL) == LIST_NULL_ARGUMENT);
     ASSERT_TEST(listInsertLast(NULL, student0) == LIST_NULL_ARGUMENT);
-    //TODO: change
-//    ASSERT_TEST(listInsertFirst(list, NULL) == LIST_NULL_ARGUMENT);
+    ASSERT_TEST(listInsertFirst(list, NULL) == LIST_OUT_OF_MEMORY);
     ASSERT_TEST(listGetSize(list) == 0);
 
     //insert an element to the list and test all its fields
@@ -357,6 +382,10 @@ static bool testListInsertLast() {
     ASSERT_TEST(listGetSize(list) == 3);
 
     listDestroy(list);
+
+    freeStudent(student0);
+    freeStudent(student1);
+    freeStudent(student2);
     return true;
 }
 
@@ -372,8 +401,7 @@ static bool testListInsertBeforeCurrent() {
     //test return value for NULL params and list size
     ASSERT_TEST(listInsertBeforeCurrent(NULL, NULL) == LIST_NULL_ARGUMENT);
     ASSERT_TEST(listInsertBeforeCurrent(NULL, student0) == LIST_NULL_ARGUMENT);
-    //TODO: change
-//    ASSERT_TEST(listInsertFirst(list, NULL) == LIST_NULL_ARGUMENT);
+    ASSERT_TEST(listInsertFirst(list, NULL) == LIST_OUT_OF_MEMORY);
     ASSERT_TEST(listGetSize(list) == 0);
 
     //test return value for invalid iterator for empty and non empty lists
@@ -404,6 +432,10 @@ static bool testListInsertBeforeCurrent() {
     ASSERT_TEST(listInsertBeforeCurrent(list, student1) == LIST_INVALID_CURRENT);
 
     listDestroy(list);
+
+    freeStudent(student0);
+    freeStudent(student1);
+    freeStudent(student2);
     return true;
 }
 
@@ -419,8 +451,7 @@ static bool testListInsertAfterCurrent() {
     //test return value for NULL params and list size
     ASSERT_TEST(listInsertAfterCurrent(NULL, NULL) == LIST_NULL_ARGUMENT);
     ASSERT_TEST(listInsertAfterCurrent(NULL, student0) == LIST_NULL_ARGUMENT);
-    //TODO: change
-//    ASSERT_TEST(listInsertFirst(list, NULL) == LIST_NULL_ARGUMENT);
+    ASSERT_TEST(listInsertFirst(list, NULL) == LIST_OUT_OF_MEMORY);
     ASSERT_TEST(listGetSize(list) == 0);
 
     //test return value for invalid iterator for empty and non empty list
@@ -452,6 +483,10 @@ static bool testListInsertAfterCurrent() {
     ASSERT_TEST(listInsertAfterCurrent(list, student1) == LIST_INVALID_CURRENT);
 
     listDestroy(list);
+
+    freeStudent(student0);
+    freeStudent(student1);
+    freeStudent(student2);
     return true;
 }
 
@@ -505,6 +540,10 @@ static bool testListRemoveCurrent() {
     ASSERT_TEST(listGetCurrent(list) == NULL);
 
     listDestroy(list);
+
+    freeStudent(student0);
+    freeStudent(student1);
+    freeStudent(student2);
     return true;
 }
 
@@ -584,6 +623,14 @@ static bool testListSort() {
     ASSERT_TEST(strcmp(test_student->name, name[5]) == 0);
 
     listDestroy(list);
+
+    freeStudent(student0);
+    freeStudent(student1);
+    freeStudent(student2);
+    freeStudent(student3);
+    freeStudent(student4);
+    freeStudent(student5);
+    freeStudent(student6);
     return true;
 }
 
@@ -595,7 +642,7 @@ static bool testListFilter() {
     ASSERT_TEST(listFilter(list, NULL, NULL) == NULL);
     ASSERT_TEST(listFilter(NULL, isAverageGreaterThan, NULL) == NULL);
     ASSERT_TEST(listFilter(NULL, NULL, &key) == NULL);
-//    ASSERT_TEST(listFilter(list, isAverageGreaterThan, NULL) == NULL);
+    ASSERT_TEST(listFilter(list, isAverageGreaterThan, NULL) == NULL);
     ASSERT_TEST(listFilter(list, NULL, &key) == NULL);
     ASSERT_TEST(listFilter(NULL, isAverageGreaterThan, &key) == NULL);
 
@@ -638,17 +685,26 @@ static bool testListFilter() {
 
     char* key2 = "Ran";
     //filter the filtered list by string param
-    list_filtered = listFilter(list_filtered, areNameEqual, key2);
-    ASSERT_TEST(listGetSize(list_filtered) == 1);
-    test_student = listGetCurrent(list_filtered);
+    List list_filtered2 = listFilter(list_filtered, areNameEqual, key2);
+    ASSERT_TEST(listGetSize(list_filtered2) == 1);
+    test_student = listGetCurrent(list_filtered2);
     ASSERT_TEST(test_student->id == id[3]);
     ASSERT_TEST(strcmp(test_student->name, name[3]) == 0);
     ASSERT_TEST(test_student->average == average[3]);
 
-    ASSERT_TEST(listGetNext(list_filtered) == NULL);
+    ASSERT_TEST(listGetNext(list_filtered2) == NULL);
 
     listDestroy(list);
     listDestroy(list_filtered);
+    listDestroy(list_filtered2);
+
+    freeStudent(student0);
+    freeStudent(student1);
+    freeStudent(student2);
+    freeStudent(student3);
+    freeStudent(student4);
+    freeStudent(student5);
+    freeStudent(student6);
     return true;
 }
 
@@ -686,6 +742,14 @@ static bool testListClear() {
     ASSERT_TEST(listGetSize(list) == 0);
 
     listDestroy(list);
+
+    freeStudent(student0);
+    freeStudent(student1);
+    freeStudent(student2);
+    freeStudent(student3);
+    freeStudent(student4);
+    freeStudent(student5);
+    freeStudent(student6);
     return true;
 }
 
@@ -718,6 +782,14 @@ static bool testListDestroy() {
     listInsertLast(list, student6);
 
     listDestroy(list);
+
+    freeStudent(student0);
+    freeStudent(student1);
+    freeStudent(student2);
+    freeStudent(student3);
+    freeStudent(student4);
+    freeStudent(student5);
+    freeStudent(student6);
     return true;
 }
 
@@ -739,4 +811,3 @@ int main(int argv, char **arc) {
     RUN_TEST(testListDestroy);
     return 0;
 }
-

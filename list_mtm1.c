@@ -48,12 +48,12 @@ static ListNode listGetPreviousNode(List list) {
     return ptr_node;
 }
 
-static void swapElements(List list, ListNode node1, ListNode node2) {
+static void swapElements(ListNode node1, ListNode node2) {
     assert(list != NULL && element1 != NULL && element2 != NULL);
 
-    ListElement tmp_element = list->copy(node1->data);
-    node1->data = list->copy(node2->data);
-    node2->data = list->copy(tmp_element);
+    ListElement tmp_element = node1->data;
+    node1->data = node2->data;
+    node2->data = tmp_element;
 }
 
 List listCreate(CopyListElement copyElement, FreeListElement freeElement) {
@@ -86,18 +86,22 @@ List listCopy(List list) {
         return NULL;
     }
 
-    ListResult result;
     ListNode ptr_node_src = list->head;
     while (ptr_node_src != NULL) {
-        result = listInsertLast(new_list, ptr_node_src->data);
+        ListResult result = listInsertLast(new_list, ptr_node_src->data);
         if (result != LIST_SUCCESS) {
             listDestroy(new_list);
             return NULL;
         }
+        if(list->cur_node == ptr_node_src){
+            ListNode tmp_ptr = new_list->head;
+            while (tmp_ptr->next != NULL){
+                tmp_ptr = tmp_ptr->next;
+            }
+            new_list->cur_node = tmp_ptr;
+        }
         ptr_node_src = ptr_node_src->next;
     }
-    new_list->cur_node = list->cur_node;
-
     return new_list;
 }
 
@@ -272,7 +276,7 @@ ListResult listSort(List list, CompareListElements compareElement) {
         ptr_node = list->head;
         for (int i = 0; i < (list->list_size) - n - 1; ++i) {
             if (compareElement(ptr_node->data, ptr_node->next->data) > 0) {
-                swapElements(list, ptr_node, ptr_node->next);
+                swapElements(ptr_node, ptr_node->next);
                 swapped = true;
             }
             ptr_node = ptr_node->next;
@@ -285,15 +289,11 @@ ListResult listSort(List list, CompareListElements compareElement) {
 
 List listFilter(List list, FilterListElement filterElement, ListFilterKey key) {
     assert(list != NULL && filterElement != NULL && key != NULL);
-    if (list == NULL || filterElement == NULL) {
+    if (list == NULL || filterElement == NULL || key == NULL) {
         return NULL;
     }
 
-    List new_list = listCreate(list->copy, list->free);
-    if (new_list == NULL) {
-        return NULL;
-    }
-    new_list = listCopy(list);
+    List new_list = listCopy(list);
     if (new_list == NULL) {
         return NULL;
     }
