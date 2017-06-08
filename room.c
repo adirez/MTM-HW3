@@ -44,7 +44,7 @@ static bool checkRoomArgs(char *company_email, int room_id, int price,
  * @return true - if it's a multiply of 4
  *         false - if it's not a multiply of 4 or if it's not a positive number
  */
-static bool isMultiplyOfFour (int price);
+static bool isMultiplyOfFour(int price);
 
 
 Room roomCreate(char *company_email, int room_id, int price, int num_ppl,
@@ -198,6 +198,19 @@ int roomGetClosingTime(Room room, RoomErrorCode *RoomError) {
 
     *RoomError = ROOM_SUCCESS;
     return room->closing_time;
+}
+
+bool isRoomID(Room room, int id, RoomErrorCode *RoomError) {
+    if (NULL == room) {
+        *RoomError = ROOM_INVALID_PARAMETER;
+        return false;
+    }
+
+    *RoomError = ROOM_SUCCESS;
+    if (id == room->room_id) {
+        return true;
+    }
+    return false;
 }
 
 static bool checkRoomArgs(char *company_email, int room_id, int price,

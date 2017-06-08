@@ -153,6 +153,35 @@ TechnionFaculty companyGetFaculty(Company company,
     return company->FacultyOfCompany;
 }
 
+Room companyFindRoom(Company company, int room_id,
+                    CompanyErrorCode *CompanyError) {
+    if (NULL == company || room_id <= 0) {
+        *CompanyError = COMPANY_INVALID_PARAMETER;
+        return NULL;
+    }
+
+    Room room_iterator = setGetFirst(company->company_rooms);
+    while (NULL != room_iterator) {
+        RoomErrorCode RoomError;
+        bool isEqual = isRoomID(room_iterator, room_id, &RoomError);
+        if (RoomError == ROOM_INVALID_PARAMETER) {
+            *CompanyError = COMPANY_INVALID_PARAMETER;
+            return NULL;
+        }
+        if (isEqual) {
+            *CompanyError = COMPANY_SUCCESS;
+            return room_iterator;
+        }
+        room_iterator = setGetNext(company->company_rooms);
+    }
+
+    *CompanyError = COMPANY_ROOM_DOES_NOT_EXIST;
+    return NULL;
+}
+
+
+
+
 
 
 
