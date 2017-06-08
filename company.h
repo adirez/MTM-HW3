@@ -114,6 +114,20 @@ void companyFreeElement(SetElement company);
  */
 SetElement companyCopyElement(SetElement src_company);
 
+/**
+ * receives a company and returns it's email
+ * @param company - the requested company
+ * @param CompanyError - a type to get the result of the function
+ * @return a pointer to the char* if the allocation worked and NULL if failed
+ */
+char* companyGetEmail (Company company, CompanyErrorCode *CompanyError);
 
-
+/**
+ * receives a company and returns the faculty it's listen in
+ * @param company - the requested company
+ * @param CompanyError - an error type to return the result / error
+ * @return the faculty the company's listed in or UNKNOWN if an error was found
+ */
+TechnionFaculty companyGetFaculty(Company company,
+                                  CompanyErrorCode *CompanyError);
 #endif //ESCAPETECHNION_COMPANY_H

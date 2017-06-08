@@ -34,9 +34,9 @@ struct Room_t {
  * @return true - all of the arguments are valid
  *         false - not all of the arguments are valid
  */
-static bool checkRoomArgs (char* company_email, int room_id, int price,
-                            int num_ppl, int opening_time, int closing_time,
-                            int difficulty);
+static bool checkRoomArgs(char *company_email, int room_id, int price,
+                          int num_ppl, int opening_time, int closing_time,
+                          int difficulty);
 /**
  * receives the price per person of a certain room and makes sure it it's a
  * multiply of 4
@@ -125,7 +125,82 @@ SetElement roomCopyElement(SetElement src_room) {
     return room;
 }
 
-static bool checkRoomArgs (char* company_email, int room_id, int price,
+char *roomGetCompanyEmail(Room room, RoomErrorCode *RoomError) {
+    if (NULL == room) {
+        *RoomError = ROOM_INVALID_PARAMETER;
+        return NULL;
+    }
+    char *output = malloc((size_t) sizeof(char) * strlen(room->company_email));
+    if (NULL == output) {
+        *RoomError = ROOM_OUT_OF_MEMORY;
+        return NULL;
+    }
+    strcpy(output, room->company_email);
+    *RoomError = ROOM_SUCCESS;
+    return output;
+}
+
+int roomGetID(Room room, RoomErrorCode *RoomError) {
+    if (NULL == room) {
+        *RoomError = ROOM_INVALID_PARAMETER;
+        return INVALID_PARAMETER;
+    }
+
+    *RoomError = ROOM_SUCCESS;
+    return room->room_id;
+}
+
+int roomGetPrice(Room room, RoomErrorCode *RoomError) {
+    if (NULL == room) {
+        *RoomError = ROOM_INVALID_PARAMETER;
+        return INVALID_PARAMETER;
+    }
+
+    *RoomError = ROOM_SUCCESS;
+    return room->room_price;
+}
+
+int roomGetNumPpl(Room room, RoomErrorCode *RoomError) {
+    if (NULL == room) {
+        *RoomError = ROOM_INVALID_PARAMETER;
+        return INVALID_PARAMETER;
+    }
+
+    *RoomError = ROOM_SUCCESS;
+    return room->num_ppl;
+}
+
+int roomGetDifficulty(Room room, RoomErrorCode *RoomError) {
+    if (NULL == room) {
+        *RoomError = ROOM_INVALID_PARAMETER;
+        return INVALID_PARAMETER;
+    }
+
+    *RoomError = ROOM_SUCCESS;
+    return room->difficulty;
+}
+
+int roomGetOpeningTime(Room room, RoomErrorCode *RoomError) {
+    if (NULL == room) {
+        *RoomError = ROOM_INVALID_PARAMETER;
+        return INVALID_PARAMETER;
+    }
+
+    *RoomError = ROOM_SUCCESS;
+    return room->opening_time;
+}
+
+int roomGetClosingTime(Room room, RoomErrorCode *RoomError) {
+    if (NULL == room) {
+        *RoomError = ROOM_INVALID_PARAMETER;
+        return INVALID_PARAMETER;
+    }
+
+    *RoomError = ROOM_SUCCESS;
+    return room->closing_time;
+}
+
+static bool checkRoomArgs(char *company_email, int room_id, int price,
                            int num_ppl, int opening_time, int closing_time,
                            int difficulty) {
     if (!isEmailValid(company_email)) {

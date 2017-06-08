@@ -82,5 +82,62 @@ void roomFreeElement(SetElement room);
  */
 SetElement roomCopyElement(SetElement src_room);
 
+/**
+ * receives a room and returns the email of the company that the room is listed
+ * in
+ * @param room - the requested room to be checked
+ * @param RoomError - a type to get the result of the function
+ * @return a pointer to the char* if the allocation worked and NULL if failed
+ */
+char *roomGetCompanyEmail(Room room, RoomErrorCode *RoomError);
+
+/**
+ * receives a room and returns it's ID
+ * @param room - the requested room
+ * @param RoomError - a type to get the result of the function
+ * @return the id of the room or INVALID of an error was found
+ */
+int roomGetID(Room room, RoomErrorCode *RoomError);
+
+/**
+ * receives a room and returns it's price
+ * @param room - the requested room
+ * @param RoomError - a type to get the result of the function
+ * @return the price of the room or INVALID of an error was found
+ */
+int roomGetPrice(Room room, RoomErrorCode *RoomError);
+
+/**
+ * receives a room and returns the recommended number of people to participate
+ * @param room - the requested room
+ * @param RoomError - a type to get the result of the function
+ * @return the recommended number of people or INVALID of an error was found
+ */
+int roomGetNumPpl(Room room, RoomErrorCode *RoomError);
+
+/**
+ * receives a room and returns it's difficulty level
+ * @param room - the requested room
+ * @param RoomError - a type to get the result of the function
+ * @return the difficulty level of the room or INVALID of an error was found
+ */
+int roomGetDifficulty(Room room, RoomErrorCode *RoomError);
+
+/**
+ * receives a room and returns it's opening time
+ * @param room - the requested room
+ * @param RoomError - a type to get the result of the function
+ * @return the opening time of the room or INVALID of an error was found
+ */
+int roomGetOpeningTime(Room room, RoomErrorCode *RoomError);
+
+/**
+ * receives a room and returns it's closing time
+ * @param room - the requested room
+ * @param RoomError - a type to get the result of the function
+ * @return the closing time of the room or INVALID of an error was found
+ */
+int roomGetClosingTime(Room room, RoomErrorCode *RoomError);
+
 
 #endif //HW3_ROOM_H

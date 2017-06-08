@@ -116,17 +116,17 @@ ReservationErrorCode reservationDestroy(Reservation reservation) {
     return RESERVATION_SUCCESS;
 }
 /*
-int reservationCompareElements(SetElement reservation_1, SetElement reservation_2);
+int reservationCompareElements(ListElement reservation_1, ListElement reservation_2);
 */
 
-void reservationFreeElement(SetElement reservation) {
+void reservationFreeElement(ListElement reservation) {
     if (NULL == reservation) {
         return;
     }
     reservationDestroy(reservation);
 }
 
-SetElement reservationCopyElement(SetElement src_reservation) {
+ListElement reservationCopyElement(ListElement src_reservation) {
     if (NULL == src_reservation) {
         return NULL;
     }
