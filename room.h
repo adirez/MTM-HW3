@@ -38,7 +38,7 @@ typedef enum {
  * @param RoomError - the result of the function
  * @return Room - a pointer to the successfully created room if everything went
  *         ok
- //TODO    NULL - if the allocation was not successful??
+ *         NULL - if the allocation was not successful
  */
 Room roomCreate(char *company_email, int room_id, int price, int num_ppl,
                 int opening_time, int closing_time, int difficulty,
@@ -71,13 +71,8 @@ int roomCompareElements(SetElement room_1, SetElement room_2);
 /**
  * frees all relevant allocated memory of a specific room element
  * @param room - the room to be freed
- * @return ROOM_SUCCESS - the room was removed successfuly
- *         ROOM_INVALID_PARAMETER - one of the parameters was invalid
- *         ROOM_ID_DOES_NOT_EXIST - the id of the room wasn't recognized
- *         ROOM_RESERVATION_EXISTS - one of the rooms has an existing
- *         reservation
  */
-RoomErrorCode roomFreeElement(SetElement room);
+void roomFreeElement(SetElement room);
 
 /**
  * receives a source room element and copies it's data into a newly created

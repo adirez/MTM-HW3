@@ -46,6 +46,7 @@ Company companyCreate(char *company_email, TechnionFaculty Faculty,
  * @param company - a pointer to the relevant company to be destroyed
  * @return COMPANY_SUCCESS - the room was removed successfuly
  *         COMPANY_INVALID_PARAMETER - one of the parameters was invalid
+ *         COMPANY_ROOM_DOES_NOT_EXIST - the asked room wasn't found
  *         COMPANY_RESERVATION_EXISTS - one of the rooms has an existing
  *         reservation
  */
@@ -72,7 +73,8 @@ CompanyErrorCode companyDestroy(Company company);
  */
 CompanyErrorCode companyAddRoom(Company company, char *company_email,
                                 int room_id, int price, int num_ppl,
-                                char *working_hrs, int difficulty);
+                                int opening_time, int closing_time,
+                                int difficulty);
 
 /**
  * removes a room from the company set
@@ -101,13 +103,8 @@ int companyCompareElements(SetElement company_1, SetElement company_2);
 /**
  * frees all relevant allocated memory of a specific company element
  * @param company - the company  to be freed
- * @return COMPANY_SUCCESS - the function went with no errors
- *         COMPANY_ROOM_DOES_NOT_EXIST - the asked room wasn't found
- *         COMPANY_INVALID_PARAMETER - one of the parameters was invalid
- *         COMPANY_RESERVATION_EXISTS - one of the rooms has an existing
- *         reservation
  */
-CompanyErrorCode companyFreeElement(SetElement company);
+void companyFreeElement(SetElement company);
 
 /**
  * receives a source company element and copies it's data into a newly created
@@ -116,6 +113,7 @@ CompanyErrorCode companyFreeElement(SetElement company);
  * @return pointer to the new allocated company or NULL if the allocation failed
  */
 SetElement companyCopyElement(SetElement src_company);
+
 
 
 #endif //ESCAPETECHNION_COMPANY_H

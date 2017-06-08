@@ -25,18 +25,27 @@ typedef enum {
 /**
  * creates a new reservation according to the relevant input parameters and
  * returns the relevant result code.
- * @param escaper_email - the email of the escaper who wants to reserve a room
- * @param Faculty - the Faculty the escaper is listed in
- * @param room_id - the id of the room to be reserved
- * @param reservation_time - the time the escaper wants to reserve the room
- * @param num_ppl - the number of people to participate in the reservation
+ * @param escaper_email - the email of the escaper
+ * @param company_email - the email of the company the room is listed in
+ * @param FacultyOfEscaper - the faculty the escaper is listed in
+ * @param FacultyOfRoom - the faculty the room is listed in
+ * @param room_id - the id of the asked room
+ * @param num_ppl - number of escapers for the reservation
+ * @param escaper_skill - the expertise level of the escaper
+ * @param days_to_reservation - number of days for the reservation to take place
+ * @param reservation_hour - the hour the room is reserved for
+ * @param total_cost - the total amount to pay
  * @return Reservation - a pointer to the successful reservation if everything
  *         went ok
            NULL - if the allocation was not successful
  */
-Reservation reservationCreate(char *escaper_email, TechnionFaculty faculty,
-                              int room_id, char* reservation_time, int num_ppl,
-                              ReservationErrorCode *reservationError);
+Reservation reservationCreate(char *escaper_email, char *company_email,
+                              TechnionFaculty FacultyOfEscaper,
+                              TechnionFaculty FacultyOfRoom, int room_id,
+                              int num_ppl, int escaper_skill,
+                              int days_to_reservation, int reservation_hour,
+                              int total_cost,
+                              ReservationErrorCode *ReservationError);
 
 /**
  * destroys a reservation and and releases all relevant allocated memory.
@@ -46,13 +55,25 @@ Reservation reservationCreate(char *escaper_email, TechnionFaculty faculty,
  */
 ReservationErrorCode reservationDestroy(Reservation reservation);
 
+
+/**
+ * compares between two reservations received as an input
+ * @param reservation_1 - the first reservation
+ * @param reservation_2 - the second reservation
+ * @return 0 - if the reservations are identical (by all fields)
+ */
+/*
+int reservationCompareElements(ListElement reservation_1,
+                               ListElement reservation_2);
+*/
+
 /**
  * frees all relevant allocated memory of a specific escaper element
  * @param escaper - the escaper to be freed
  * @return RESERVATION_SUCCESS - the function went with no errors
  *         RESERVATION_INVALID_PARAMETER - one of the parameters was invalid
  */
-ReservationErrorCode reservationFreeElement(ListElement reservation);
+void reservationFreeElement(ListElement reservation);
 
 /**
  * receives a source reservation element and copies it's data into a newly
