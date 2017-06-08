@@ -86,291 +86,202 @@ static int compareNames(ListElement element1, ListElement element2) {
     return strcmp(student1->name, student2->name);
 }
 
+/** Tests for each function */
+
 static bool testListCreate() {
+    //test NULL params returns value
     ASSERT_TEST(listCreate(NULL, NULL) == NULL);
     ASSERT_TEST(listCreate(copyStudent, NULL) == NULL);
     ASSERT_TEST(listCreate(NULL, freeStudent) == NULL);
 
-    return true;
-}
-
-static bool testListFilter() {
-    int id[6] = {308571546, 311242440, 21620431, 777777777, 1, 23};
-    char *name[6] = {"Adi Reznik", "Shahak Ben Kalifa", "Sagi Barazani",
-                     "Horef Cenzor", "aaa", "abc"};
-    double average[6] = {88.9, 91.00, 93.5, 100, 30.21, 55.5};
-
-    Student student0 = studentCreate(id[0], name[0], average[0]);
-    Student student1 = studentCreate(id[1], name[1], average[1]);
-    Student student2 = studentCreate(id[2], name[2], average[2]);
-    Student student3 = studentCreate(id[3], name[3], average[3]);
-    Student student4 = studentCreate(id[4], name[4], average[4]);
-    Student student5 = studentCreate(id[5], name[5], average[5]);
-
+    //test success create
     List list = listCreate(copyStudent, freeStudent);
-
-    ASSERT_TEST(listInsertLast(list, student0) == LIST_SUCCESS);
-    ASSERT_TEST(listInsertLast(list, student1) == LIST_SUCCESS);
-    ASSERT_TEST(listInsertLast(list, student2) == LIST_SUCCESS);
-    ASSERT_TEST(listInsertLast(list, student3) == LIST_SUCCESS);
-    ASSERT_TEST(listInsertLast(list, student4) == LIST_SUCCESS);
-    ASSERT_TEST(listInsertLast(list, student5) == LIST_SUCCESS);
-
-    char *key1 = "Horef Cenzor";
-    List filtered1 = listFilter(list, areNameEqual, key1);
-    ASSERT_TEST(listGetSize(filtered1) == 1);
-    Student test_student = listGetFirst(filtered1);
-    ASSERT_TEST(test_student->id == id[3]);
-    ASSERT_TEST(strcmp(test_student->name, name[3]) == 0);
-    ASSERT_TEST(test_student->average == average[3]);
-
-    listDestroy(filtered1);
-
-    double key2 = 91;
-    List filtered2 = listFilter(list, isAverageGreaterThan, &key2);
-    ASSERT_TEST(listGetSize(filtered2) == 2);
-    test_student = listGetFirst(filtered2);
-    ASSERT_TEST(test_student->id == id[2]);
-    ASSERT_TEST(strcmp(test_student->name, name[2]) == 0);
-    ASSERT_TEST(test_student->average == average[2]);
-
-    listDestroy(filtered2);
-
-    double key3 = 101;
-    List filtered3 = listFilter(list, isAverageGreaterThan, &key3);
-    ASSERT_TEST(listGetSize(filtered3) == 0);
-    ASSERT_TEST(listGetFirst(filtered3) == NULL);
-
-    listDestroy(filtered3);
+    ASSERT_TEST(list != NULL);
 
     listDestroy(list);
     return true;
 }
 
 static bool testListCopy() {
-
+    //test result value for NULL param
+    ASSERT_TEST(listCopy(NULL) == NULL);
+    //create the original list
     List list = listCreate(copyStudent, freeStudent);
-    List list_copy = listCopy(list);
-    ASSERT_TEST(listGetCurrent(list_copy) == NULL);
-    ASSERT_TEST(listGetFirst(list_copy) == NULL);
-    ASSERT_TEST(listGetSize(list_copy) == 0);
-
-    listDestroy(list_copy);
-
-    int id[6] = {308571546, 311242440, 21620431, 777777777, 1, 23};
-    char *name[6] = {"Adi Reznik", "Shahak Ben Kalifa", "Sagi Barazani",
-                     "Horef Cenzor", "aaa", "abc"};
-    double average[6] = {88.9, 91.00, 93.5, 100, 30.21, 55.5};
-
+    int id[2] = {308571546, 311242440};
+    char *name[2] = {"Adi Reznik", "Shahak Ben Kalifa"};
+    double average[2] = {88.9, 91.00};
     Student student0 = studentCreate(id[0], name[0], average[0]);
     Student student1 = studentCreate(id[1], name[1], average[1]);
-    Student student2 = studentCreate(id[2], name[2], average[2]);
-    Student student3 = studentCreate(id[3], name[3], average[3]);
-    Student student4 = studentCreate(id[4], name[4], average[4]);
-    Student student5 = studentCreate(id[5], name[5], average[5]);
+    listInsertLast(list, student0);
+    listInsertLast(list, student1);
+    //put the iterator to the second element
+    listGetFirst(list);
+    listGetNext(list);
 
-    ASSERT_TEST(listInsertLast(list, student0) == LIST_SUCCESS);
-    ASSERT_TEST(listInsertLast(list, student1) == LIST_SUCCESS);
-    ASSERT_TEST(listInsertLast(list, student2) == LIST_SUCCESS);
-    ASSERT_TEST(listInsertLast(list, student3) == LIST_SUCCESS);
-    ASSERT_TEST(listInsertLast(list, student4) == LIST_SUCCESS);
-    ASSERT_TEST(listInsertLast(list, student5) == LIST_SUCCESS);
+    List list_copy = listCopy(list);
+    //test that the iterator is on the same element and the copied elements
+    // are equal and in the same order
+    Student test_student = listGetCurrent(list_copy);
+    ASSERT_TEST(test_student->id == id[1]);
+    ASSERT_TEST(strcmp(test_student->name, name[1]) == 0);
+    ASSERT_TEST(test_student->average == average[1]);
 
-    List list_copy2 = listCopy(list);
-    ASSERT_TEST(listGetCurrent(list_copy2) == NULL);
-    ASSERT_TEST(listGetSize(list_copy2) == 6);
-
-    Student test_student = listGetFirst(list_copy2);
+    test_student = listGetFirst(list_copy);
     ASSERT_TEST(test_student->id == id[0]);
     ASSERT_TEST(strcmp(test_student->name, name[0]) == 0);
     ASSERT_TEST(test_student->average == average[0]);
 
-    for (int i = 1; i < 5; ++i) {
-        test_student = listGetNext(list_copy2);
-        ASSERT_TEST(test_student->id == id[i]);
-        ASSERT_TEST(strcmp(test_student->name, name[i]) == 0);
-        ASSERT_TEST(test_student->average == average[i]);
-    }
+    //test the infrastructure functions of the copied list: copy and free
+    List list_copy_of_copy = listCopy(list_copy);
+    test_student = listGetCurrent(list_copy_of_copy);
+    ASSERT_TEST(test_student->id == id[0]);
 
-    listGetFirst(list);
-    listGetNext(list);
-    listGetNext(list);
-    List list_copy3 = listCopy(list);
-    test_student = listGetCurrent(list_copy3);
-    ASSERT_TEST(test_student->id == id[2]);
-    ASSERT_TEST(strcmp(test_student->name, name[2]) == 0);
-    ASSERT_TEST(test_student->average == average[2]);
+    test_student = listGetNext(list_copy_of_copy);
+    ASSERT_TEST(test_student->id == id[1]);
 
+    listDestroy(list);
+    listDestroy(list_copy);
+    listDestroy(list_copy_of_copy);
     return true;
 }
 
 static bool testListGetSize() {
-    int id[6] = {308571546, 311242440, 21620431, 777777777, 1, 23};
-    char *name[6] = {"Adi Reznik", "Shahak Ben Kalifa", "Sagi Barazani",
-                     "Horef Cenzor", "aaa", "abc"};
-    double average[6] = {88.9, 91.00, 93.5, 100, 30.21, 55.5};
+    //test return value for NULL param
+    ASSERT_TEST(listGetSize(NULL) == -1);
+    //test return value for empty list
+    List list = listCreate(copyStudent, freeStudent);
+    ASSERT_TEST(listGetSize(list) == 0);
 
+    //enter elements to the list and test size
+    int id[2] = {308571546, 311242440};
+    char *name[2] = {"Adi Reznik", "Shahak Ben Kalifa"};
+    double average[2] = {88.9, 91.00};
     Student student0 = studentCreate(id[0], name[0], average[0]);
     Student student1 = studentCreate(id[1], name[1], average[1]);
-    Student student2 = studentCreate(id[2], name[2], average[2]);
-    Student student3 = studentCreate(id[3], name[3], average[3]);
-    Student student4 = studentCreate(id[4], name[4], average[4]);
-    Student student5 = studentCreate(id[5], name[5], average[5]);
+    listInsertLast(list, student0);
+    ASSERT_TEST(listGetSize(list) == 1);
+    listInsertLast(list, student1);
+    ASSERT_TEST(listGetSize(list) == 2);
 
-    List list = listCreate(copyStudent, freeStudent);
-
-    ASSERT_TEST(listGetSize(NULL) == -1);
-    ASSERT_TEST(listGetSize(list) == 0);
-    ASSERT_TEST(listInsertFirst(NULL, student1) == LIST_NULL_ARGUMENT);
-    ASSERT_TEST(listGetSize(list) == 0);
-    ASSERT_TEST(listInsertLast(list, student0) == LIST_SUCCESS);
+    //remove elements from list and test size
     listGetFirst(list);
-    ASSERT_TEST(listInsertAfterCurrent(list, student1) == LIST_SUCCESS);
-    ASSERT_TEST(listInsertBeforeCurrent(list, student2) == LIST_SUCCESS);
-    ASSERT_TEST(listGetSize(list) == 3);
-    ASSERT_TEST(listInsertFirst(list, student3) == LIST_SUCCESS);
-    listGetNext(list);
-    ASSERT_TEST(listInsertLast(list, student4) == LIST_SUCCESS);
-    ASSERT_TEST(listInsertFirst(list, student5) == LIST_SUCCESS);
-    ASSERT_TEST(listGetSize(list) == 6);
-
-    ASSERT_TEST(listRemoveCurrent(list) == LIST_SUCCESS);
-    ASSERT_TEST(listGetSize(list) == 5);
+    listRemoveCurrent(list);
+    ASSERT_TEST(listGetSize(list) == 1);
+    listGetFirst(list);
+    listRemoveCurrent(list);
+    ASSERT_TEST(listGetSize(list) == 0);
 
     listDestroy(list);
     return true;
 }
 
 static bool testListGetFirst() {
-    int id[6] = {308571546, 311242440, 21620431, 777777777, 1, 23};
-    char *name[6] = {"Adi Reznik", "Shahak Ben Kalifa", "Sagi Barazani",
-                     "Horef Cenzor", "aaa", "abc"};
-    double average[6] = {88.9, 91.00, 93.5, 100, 30.21, 55.5};
+    //test return value for NULL param
+    ASSERT_TEST(listGetFirst(NULL) == NULL);
+    //test return value for empty list
+    List list = listCreate(copyStudent, freeStudent);
+    ASSERT_TEST(listGetFirst(list) == NULL);
 
+    int id[3] = {308571546, 311242440, 234122};
+    char *name[3] = {"Adi Reznik", "Shahak Ben Kalifa", "MTM"};
+    double average[3] = {88.9, 91.00, 71};
     Student student0 = studentCreate(id[0], name[0], average[0]);
     Student student1 = studentCreate(id[1], name[1], average[1]);
     Student student2 = studentCreate(id[2], name[2], average[2]);
-    Student student3 = studentCreate(id[3], name[3], average[3]);
-    Student student4 = studentCreate(id[4], name[4], average[4]);
-    Student student5 = studentCreate(id[5], name[5], average[5]);
 
-    List list = listCreate(copyStudent, freeStudent);
-
-    ASSERT_TEST(listGetFirst(NULL) == NULL);
-    ASSERT_TEST(listGetFirst(list) == NULL);
-    ASSERT_TEST(listInsertFirst(NULL, student1) == LIST_NULL_ARGUMENT);
-    ASSERT_TEST(listGetFirst(list) == NULL);
-    ASSERT_TEST(listInsertLast(list, student0) == LIST_SUCCESS);
+    //enter 1 element to the list and test if it gets back
+    listInsertLast(list, student0);
     Student test_student = listGetFirst(list);
     ASSERT_TEST(test_student->id == id[0]);
     ASSERT_TEST(strcmp(test_student->name, name[0]) == 0);
     ASSERT_TEST(test_student->average == average[0]);
 
-    ASSERT_TEST(listInsertAfterCurrent(list, student1) == LIST_SUCCESS);
-    ASSERT_TEST(listInsertBeforeCurrent(list, student2) == LIST_SUCCESS);
+    //add element after the first and test if the first got back
+    listInsertLast(list, student1);
+    test_student = listGetFirst(list);
+    ASSERT_TEST(test_student->id == id[0]);
+
+    //add element to the beginning of the list and test if it got back
+    listInsertFirst(list, student2);
     test_student = listGetFirst(list);
     ASSERT_TEST(test_student->id == id[2]);
-    ASSERT_TEST(strcmp(test_student->name, name[2]) == 0);
-    ASSERT_TEST(test_student->average == average[2]);
-
-    ASSERT_TEST(listInsertFirst(list, student3) == LIST_SUCCESS);
-    listGetNext(list);
-    ASSERT_TEST(listInsertLast(list, student4) == LIST_SUCCESS);
-    ASSERT_TEST(listInsertAfterCurrent(list, student5) == LIST_SUCCESS);
-    test_student = listGetFirst(list);
-    ASSERT_TEST(test_student->id == id[3]);
-    ASSERT_TEST(strcmp(test_student->name, name[3]) == 0);
-    ASSERT_TEST(test_student->average == average[3]);
-
-    listGetFirst(list);
-    ASSERT_TEST(listRemoveCurrent(list) == LIST_SUCCESS);
-    test_student = listGetFirst(list);
-    ASSERT_TEST(test_student->id == id[2]);
-    ASSERT_TEST(strcmp(test_student->name, name[2]) == 0);
-    ASSERT_TEST(test_student->average == average[2]);
 
     listDestroy(list);
     return true;
 }
 
 static bool testListGetNext() {
-    int id[4] = {308571546, 311242440, 21620431, 777777777};
-    char *name[4] = {"Adi Reznik", "Shahak Ben Kalifa", "Sagi Barazani",
-                     "Horef Cenzor"};
-    double average[4] = {88.9, 91.00, 93.5, 100};
+    //test return value for NULL param
+    ASSERT_TEST(listGetNext(NULL) == NULL);
+    //test return value for empty list
+    List list = listCreate(copyStudent, freeStudent);
+    ASSERT_TEST(listGetNext(list) == NULL);
 
+    int id[4] = {308571546, 311242440, 234122, 7};
+    char *name[4] = {"Adi Reznik", "Shahak Ben Kalifa", "MTM", "Cenzor"};
+    double average[4] = {88.9, 91.00, 71, 100};
     Student student0 = studentCreate(id[0], name[0], average[0]);
     Student student1 = studentCreate(id[1], name[1], average[1]);
     Student student2 = studentCreate(id[2], name[2], average[2]);
     Student student3 = studentCreate(id[3], name[3], average[3]);
 
-    List list = listCreate(copyStudent, freeStudent);
-
-    ASSERT_TEST(listGetNext(NULL) == NULL);
+    //insert an element and test if returns NULL because iterator is at an
+    // invalid state
+    listInsertLast(list, student0);
     ASSERT_TEST(listGetNext(list) == NULL);
-    ASSERT_TEST(listInsertFirst(NULL, student1) == LIST_NULL_ARGUMENT);
-    ASSERT_TEST(listGetFirst(list) == NULL);
-    ASSERT_TEST(listInsertLast(list, student0) == LIST_SUCCESS);
-    ASSERT_TEST(listInsertLast(list, student1) == LIST_SUCCESS);
+    //move iterator to the element and test if NULL comes back (end of the list)
     listGetFirst(list);
+    ASSERT_TEST(listGetNext(list) == NULL);
+    listGetFirst(list);
+    //insert 2 more elements and test that the first of them is returned
+    listInsertLast(list, student1);
+    listInsertLast(list, student2);
     Student test_student = listGetNext(list);
     ASSERT_TEST(test_student->id == id[1]);
-
-    ASSERT_TEST(listInsertAfterCurrent(list, student3) == LIST_SUCCESS);
-    ASSERT_TEST(listInsertBeforeCurrent(list, student2) == LIST_SUCCESS);
-
+    //insert element to the beginning of list and test if the last element
+    // returns
+    listInsertLast(list, student3);
+    test_student = listGetNext(list);
+    ASSERT_TEST(test_student->id == id[2]);
 
     listDestroy(list);
     return true;
 }
-//TODO: finish implementing
-static bool testListGetCurrent() {
-    int id[6] = {308571546, 311242440, 21620431, 777777777, 1, 23};
-    char *name[6] = {"Adi Reznik", "Shahak Ben Kalifa", "Sagi Barazani",
-                     "Horef Cenzor", "aaa", "abc"};
-    double average[6] = {88.9, 91.00, 93.5, 100, 30.21, 55.5};
 
+static bool testListGetCurrent() {
+    //test return value for NULL param
+    ASSERT_TEST(listGetCurrent(NULL) == NULL);
+    //test return value for empty list
+    List list = listCreate(copyStudent, freeStudent);
+    ASSERT_TEST(listGetCurrent(list) == NULL);
+
+    int id[4] = {308571546, 311242440, 234122, 7};
+    char *name[4] = {"Adi Reznik", "Shahak Ben Kalifa", "MTM", "Cenzor"};
+    double average[4] = {88.9, 91.00, 71, 100};
     Student student0 = studentCreate(id[0], name[0], average[0]);
     Student student1 = studentCreate(id[1], name[1], average[1]);
     Student student2 = studentCreate(id[2], name[2], average[2]);
     Student student3 = studentCreate(id[3], name[3], average[3]);
-    Student student4 = studentCreate(id[4], name[4], average[4]);
-    Student student5 = studentCreate(id[5], name[5], average[5]);
 
-    List list = listCreate(copyStudent, freeStudent);
-
-    ASSERT_TEST(listGetFirst(NULL) == NULL);
-    ASSERT_TEST(listGetFirst(list) == NULL);
-    ASSERT_TEST(listInsertFirst(NULL, student1) == LIST_NULL_ARGUMENT);
-    ASSERT_TEST(listGetFirst(list) == NULL);
-    ASSERT_TEST(listInsertLast(list, student0) == LIST_SUCCESS);
-    Student test_student = listGetFirst(list);
-    ASSERT_TEST(test_student->id == id[0]);
-    ASSERT_TEST(strcmp(test_student->name, name[0]) == 0);
-    ASSERT_TEST(test_student->average == average[0]);
-
-    ASSERT_TEST(listInsertAfterCurrent(list, student1) == LIST_SUCCESS);
-    ASSERT_TEST(listInsertBeforeCurrent(list, student2) == LIST_SUCCESS);
-    test_student = listGetFirst(list);
-    ASSERT_TEST(test_student->id == id[2]);
-    ASSERT_TEST(strcmp(test_student->name, name[2]) == 0);
-    ASSERT_TEST(test_student->average == average[2]);
-
-    ASSERT_TEST(listInsertFirst(list, student3) == LIST_SUCCESS);
-    listGetNext(list);
-    ASSERT_TEST(listInsertLast(list, student4) == LIST_SUCCESS);
-    ASSERT_TEST(listInsertAfterCurrent(list, student5) == LIST_SUCCESS);
-    test_student = listGetFirst(list);
-    ASSERT_TEST(test_student->id == id[3]);
-    ASSERT_TEST(strcmp(test_student->name, name[3]) == 0);
-    ASSERT_TEST(test_student->average == average[3]);
-
+    //insert an element and test if returns NULL because iterator is at an
+    // invalid state
+    listInsertLast(list, student0);
+    ASSERT_TEST(listGetCurrent(list) == NULL);
+    //move iterator to first element and test if is is returned
     listGetFirst(list);
-    ASSERT_TEST(listRemoveCurrent(list) == LIST_SUCCESS);
-    test_student = listGetFirst(list);
-    ASSERT_TEST(test_student->id == id[2]);
-    ASSERT_TEST(strcmp(test_student->name, name[2]) == 0);
-    ASSERT_TEST(test_student->average == average[2]);
+    Student test_student = listGetCurrent(list);
+    ASSERT_TEST(test_student->id == id[0]);
+    //insert elements using all the insert funcs and test if the currnet
+    // element has not moved
+    listInsertFirst(list, student1);
+    test_student = listGetCurrent(list);
+    ASSERT_TEST(test_student->id == id[0]);
+    listInsertBeforeCurrent(list, student2);
+    test_student = listGetCurrent(list);
+    ASSERT_TEST(test_student->id == id[0]);
+    listInsertAfterCurrent(list, student3);
+    test_student = listGetCurrent(list);
+    ASSERT_TEST(test_student->id == id[0]);
 
     listDestroy(list);
     return true;
@@ -378,39 +289,37 @@ static bool testListGetCurrent() {
 
 
 static bool testListInsertFirst() {
-    int id[6] = {308571546, 311242440, 21620431, 777777777, 1, 23};
-    char *name[6] = {"Adi Reznik", "Shahak Ben Kalifa", "Sagi Barazani",
-                     "Horef Cenzor", "aaa", "abc"};
-    double average[6] = {88.9, 91.00, 93.5, 100, 30.21, 55.5};
-
+    List list = listCreate(copyStudent, freeStudent);
+    int id[3] = {308571546, 311242440, 234122};
+    char *name[3] = {"Adi Reznik", "Shahak Ben Kalifa", "MTM"};
+    double average[3] = {88.9, 91.00, 71};
     Student student0 = studentCreate(id[0], name[0], average[0]);
     Student student1 = studentCreate(id[1], name[1], average[1]);
     Student student2 = studentCreate(id[2], name[2], average[2]);
-    Student student3 = studentCreate(id[3], name[3], average[3]);
-    Student student4 = studentCreate(id[4], name[4], average[4]);
-    Student student5 = studentCreate(id[5], name[5], average[5]);
 
-    List list = listCreate(copyStudent, freeStudent);
+    //test return value for NULL params
+    ASSERT_TEST(listInsertFirst(NULL, NULL) == LIST_NULL_ARGUMENT);
+    ASSERT_TEST(listInsertFirst(NULL, student0) == LIST_NULL_ARGUMENT);
 
-    ASSERT_TEST(listInsertFirst(NULL, student1) == LIST_NULL_ARGUMENT);
+    //TODO: change
+//    ASSERT_TEST(listInsertFirst(list, NULL) == LIST_NULL_ARGUMENT);
+    //insert an element to the list and test all its fields
     ASSERT_TEST(listInsertFirst(list, student0) == LIST_SUCCESS);
-    ASSERT_TEST(listInsertFirst(list, student1) == LIST_SUCCESS);
-    ASSERT_TEST(listInsertFirst(list, student2) == LIST_SUCCESS);
-    ASSERT_TEST(listInsertFirst(list, student3) == LIST_SUCCESS);
-    ASSERT_TEST(listInsertFirst(list, student4) == LIST_SUCCESS);
-    ASSERT_TEST(listInsertFirst(list, student5) == LIST_SUCCESS);
-
-    ASSERT_TEST(listGetSize(list) == 6);
-
     Student test_student = listGetFirst(list);
-    ASSERT_TEST(test_student->id == id[5]);
+    ASSERT_TEST(test_student->id == id[0]);
+    ASSERT_TEST(strcmp(test_student->name, name[0]) == 0);
+    ASSERT_TEST(test_student->average == average[0]);
 
-    for (int i = 4; i > 0; --i) {
-        test_student = listGetNext(list);
-        ASSERT_TEST(test_student->id == id[i]);
-    }
+    //insert another element and test that it is the first
+    ASSERT_TEST(listInsertFirst(list, student1) == LIST_SUCCESS);
+    test_student = listGetFirst(list);
+    ASSERT_TEST(test_student->id == id[1]);
 
-    listDestroy(list);
+    //move iterator to the next element, insert another element and test that
+    // the iterator is still on that element
+    ASSERT_TEST(listInsertFirst(list, student1) == LIST_SUCCESS);
+    test_student = listGetCurrent(list);
+    ASSERT_TEST(test_student->id == id[1]);
     return true;
 }
 
@@ -693,6 +602,59 @@ static bool testListSort() {
     return true;
 }
 
+static bool testListFilter() {
+    int id[6] = {308571546, 311242440, 21620431, 777777777, 1, 23};
+    char *name[6] = {"Adi Reznik", "Shahak Ben Kalifa", "Sagi Barazani",
+                     "Horef Cenzor", "aaa", "abc"};
+    double average[6] = {88.9, 91.00, 93.5, 100, 30.21, 55.5};
+
+    Student student0 = studentCreate(id[0], name[0], average[0]);
+    Student student1 = studentCreate(id[1], name[1], average[1]);
+    Student student2 = studentCreate(id[2], name[2], average[2]);
+    Student student3 = studentCreate(id[3], name[3], average[3]);
+    Student student4 = studentCreate(id[4], name[4], average[4]);
+    Student student5 = studentCreate(id[5], name[5], average[5]);
+
+    List list = listCreate(copyStudent, freeStudent);
+
+    ASSERT_TEST(listInsertLast(list, student0) == LIST_SUCCESS);
+    ASSERT_TEST(listInsertLast(list, student1) == LIST_SUCCESS);
+    ASSERT_TEST(listInsertLast(list, student2) == LIST_SUCCESS);
+    ASSERT_TEST(listInsertLast(list, student3) == LIST_SUCCESS);
+    ASSERT_TEST(listInsertLast(list, student4) == LIST_SUCCESS);
+    ASSERT_TEST(listInsertLast(list, student5) == LIST_SUCCESS);
+
+    char *key1 = "Horef Cenzor";
+    List filtered1 = listFilter(list, areNameEqual, key1);
+    ASSERT_TEST(listGetSize(filtered1) == 1);
+    Student test_student = listGetFirst(filtered1);
+    ASSERT_TEST(test_student->id == id[3]);
+    ASSERT_TEST(strcmp(test_student->name, name[3]) == 0);
+    ASSERT_TEST(test_student->average == average[3]);
+
+    listDestroy(filtered1);
+
+    double key2 = 91;
+    List filtered2 = listFilter(list, isAverageGreaterThan, &key2);
+    ASSERT_TEST(listGetSize(filtered2) == 2);
+    test_student = listGetFirst(filtered2);
+    ASSERT_TEST(test_student->id == id[2]);
+    ASSERT_TEST(strcmp(test_student->name, name[2]) == 0);
+    ASSERT_TEST(test_student->average == average[2]);
+
+    listDestroy(filtered2);
+
+    double key3 = 101;
+    List filtered3 = listFilter(list, isAverageGreaterThan, &key3);
+    ASSERT_TEST(listGetSize(filtered3) == 0);
+    ASSERT_TEST(listGetFirst(filtered3) == NULL);
+
+    listDestroy(filtered3);
+
+    listDestroy(list);
+    return true;
+}
+
 static bool testListClear() {
     int id[6] = {308571546, 311242440, 21620431, 777777777, 1, 23};
     char *name[6] = {"Adi Reznik", "Shahak Ben Kalifa", "Sagi Barazani",
@@ -760,20 +722,20 @@ static bool testListDestroy() {
 
 int main(int argv, char **arc) {
     RUN_TEST(testListCreate);
-    RUN_TEST(testListFilter);
     RUN_TEST(testListCopy);
     RUN_TEST(testListGetSize);
     RUN_TEST(testListGetFirst);
     RUN_TEST(testListGetNext);
     RUN_TEST(testListGetCurrent);
     RUN_TEST(testListInsertFirst);
-    RUN_TEST(testListInsertLast);
-    RUN_TEST(testListInsertBeforeCurrent);
-    RUN_TEST(testListInsertAfterCurrent);
-    RUN_TEST(testListRemoveCurrent);
-    RUN_TEST(testListSort);
-    RUN_TEST(testListClear);
-    RUN_TEST(testListDestroy);
+//    RUN_TEST(testListInsertLast);
+//    RUN_TEST(testListInsertBeforeCurrent);
+//    RUN_TEST(testListInsertAfterCurrent);
+//    RUN_TEST(testListRemoveCurrent);
+//    RUN_TEST(testListSort);
+//    RUN_TEST(testListFilter);
+//    RUN_TEST(testListClear);
+//    RUN_TEST(testListDestroy);
     return 0;
 }
 
