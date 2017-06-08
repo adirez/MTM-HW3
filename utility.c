@@ -11,12 +11,13 @@
 
 #define INVALID_PARAMETER -1
 #define AT_SYMBOL '@'
+#define HYPHEN '-'
 #define MIN_NUMBER 48 //represents '0' in ASCII
 #define MAX_NUMBER 57 //represents '9' in ASCII
 #define MIN_HOUR 0
 #define MAX_HOUR 24
 #define HOURS_STR_LEN 5 //according to the format "HH-HH"
-
+#define DAY_HOUR_MIN_LEN 3 //according to the format "D-H"
 
 bool isEmailValid(char *email) {
     if (NULL == email) {
@@ -39,14 +40,14 @@ bool isEmailValid(char *email) {
 }
 
 bool isFacultyValid (TechnionFaculty Faculty) {
-    if (Faculty < CIVIL_ENGINEERING || Faculty > UNKNOWN) {
+    if (Faculty < CIVIL_ENGINEERING || Faculty >= UNKNOWN) {
         return false;
     }
 
     return true;
 }
 
-bool getHoursFromStr (char* hours_str, int *opening_time, int* closing_time) {
+bool getHoursFromStr (char *hours_str, int *opening_time, int* closing_time) {
     int tmp_opening = 0, tmp_closing = 0;
     if (NULL == hours_str || strlen(hours_str) != HOURS_STR_LEN) {
         return false;
@@ -81,5 +82,64 @@ bool getHoursFromStr (char* hours_str, int *opening_time, int* closing_time) {
 
     *opening_time = tmp_opening;
     *closing_time = tmp_closing;
+    return true;
+}
+
+bool GetDayAndHourFromStr (char *src_str, int *day, int *hour) {
+    int tmp_day = 0, tmp_hour = 0, idx = 0, len = 0;
+    if (NULL == src_str || strlen(src_str) < DAY_HOUR_MIN_LEN) {
+        return false;
+    }
+    len = (int)strlen(src_str);
+    char tmp_char = src_str[0];
+    //TODO check if we should return false if its a number starting with 0
+    if (tmp_char < MIN_NUMBER || tmp_char > MAX_NUMBER) {
+        return false;
+    }
+    while (1) {
+        if (idx >= len) return false;
+        tmp_char = src_str[idx];
+        if (tmp_char == HYPHEN) break;
+        if (tmp_char < MIN_NUMBER || tmp_char > MAX_NUMBER) {
+            return false;
+        }
+        int tmp_calc = atoi(&tmp_char);
+        tmp_day *= 10;
+        tmp_day += tmp_calc;
+
+        idx++;
+    }
+
+    //if we got here, curr char is '-'
+    if (++idx >= len) return false;
+
+    tmp_char = src_str[idx];
+    if (tmp_char < MIN_NUMBER || tmp_char > MAX_NUMBER) {
+        return false;
+    }
+    int tmp_calc = atoi(&tmp_char);
+    tmp_hour = tmp_calc;
+    idx++;
+    if (idx < len) {
+        tmp_char = src_str[idx];
+        if (tmp_char < MIN_NUMBER || tmp_char > MAX_NUMBER) {
+            return false;
+        }
+        tmp_calc = atoi(&tmp_char);
+        tmp_hour *= 10;
+        tmp_hour += tmp_calc;
+
+        idx++;
+        if (idx < len) {
+            //too many characters for an hour
+            return false;
+        }
+    }
+    if (tmp_hour < MIN_HOUR || tmp_hour >= MAX_HOUR) {
+        return false;
+    }
+
+    *day = tmp_day;
+    *hour = tmp_hour;
     return true;
 }

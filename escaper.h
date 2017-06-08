@@ -75,5 +75,29 @@ void escaperFreeElement(SetElement escaper);
  */
 SetElement escaperCopyElement(SetElement src_escaper);
 
+/**
+ * receives an escaper and returns the email listed in his profile
+ * @param escaper - the requested escaper to be checked
+ * @param EscaperError - a type to get the result of the function
+ * @return a pointer to the char* if the allocation worked and NULL if failed
+ */
+char *escaperGetEmail(Escaper escaper, EscaperErrorCode *EscaperError);
+
+/**
+ * receives an escaper and returns the faculty he's listed in
+ * @param escaper - the requested escaper to be checked
+ * @param EscaperError - a type to get the result of the function
+ * @return the faculty of the escaper or UNKNOWN if an error was found
+ */
+TechnionFaculty escaperGetFaculty(Escaper escaper,
+                                  EscaperErrorCode *EscaperError);
+
+/**
+ * receives an escaper and returns his skill level in escape rooms
+ * @param escaper - the requested escaper to be checked
+ * @param EscaperError - a type to get the result of the function
+ * @return the skill level of the escaper or INVALID if an error was found
+ */
+int escaperGetSkillLevel(Escaper escaper, EscaperErrorCode *EscaperError);
 
 #endif //HW3_ESCAPER_H

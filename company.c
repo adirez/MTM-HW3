@@ -40,7 +40,7 @@ Company companyCreate(char *company_email, TechnionFaculty Faculty,
     }
     strcpy(company->email, company_email);
     company->FacultyOfCompany = Faculty;
-    company->company_rooms = setCreate(roomCopyElement,roomFreeElement,
+    company->company_rooms = setCreate(roomCopyElement, roomFreeElement,
                                        roomCompareElements);
 
     *CompanyError = COMPANY_SUCCESS;
@@ -126,3 +126,43 @@ SetElement companyCopyElement(SetElement src_company) {
     }
     return company;
 }
+
+char* companyGetEmail (Company company, CompanyErrorCode *CompanyError) {
+    if (NULL == company) {
+        *CompanyError = COMPANY_INVALID_PARAMETER;
+        return NULL;
+    }
+    char *output = malloc((size_t) sizeof(char) * strlen(company->email));
+    if (NULL == output) {
+        *CompanyError = COMPANY_OUT_OF_MEMORY;
+        return NULL;
+    }
+    strcpy(output, company->email);
+    *CompanyError = COMPANY_SUCCESS;
+    return output;
+}
+
+TechnionFaculty companyGetFaculty(Company company,
+                                  CompanyErrorCode *CompanyError) {
+    if (NULL == company) {
+        *CompanyError = COMPANY_INVALID_PARAMETER;
+        return UNKNOWN;
+    }
+
+    *CompanyError = COMPANY_SUCCESS;
+    return company->FacultyOfCompany;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

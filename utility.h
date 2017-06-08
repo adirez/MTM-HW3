@@ -28,4 +28,16 @@ bool isFacultyValid (TechnionFaculty Faculty);
  *         false - if the string contains illegal chars, too short / long or if
  *         it is NULL
  */
-bool getHoursFromStr (char* hours_str, int *opening_time, int* closing_time);
+bool getHoursFromStr (char *hours_str, int *opening_time, int* closing_time);
+
+/**
+ * receives a string representing a day and an hour in the format "dd-hh" and
+ * returns the day and the hour as integers
+ * @param src_str - the source string
+ * @param day - the output of the calculated day
+ * @param hour - the output of the calculated hour
+ * @return true - if the string is valid
+ *         false - if the string contains illegal chars, too short / long or if
+ *         it is NULL
+ */
+bool GetDayAndHourFromStr (char *src_str, int *day, int *hour);

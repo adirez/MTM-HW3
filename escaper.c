@@ -100,6 +100,43 @@ SetElement escaperCopyElement(SetElement src_escaper) {
     return escaper;
 }
 
+char *escaperGetEmail(Escaper escaper, EscaperErrorCode *EscaperError) {
+    if (NULL == escaper) {
+        *EscaperError = ESCAPER_INVALID_PARAMETER;
+        return NULL;
+    }
+    char *output = malloc(
+            (size_t) sizeof(char) * strlen(escaper->escaper_email));
+    if (NULL == output) {
+        *EscaperError = ESCAPER_OUT_OF_MEMORY;
+        return NULL;
+    }
+    strcpy(output, escaper->escaper_email);
+    *EscaperError = ESCAPER_SUCCESS;
+    return output;
+}
+
+TechnionFaculty escaperGetFaculty(Escaper escaper,
+                                  EscaperErrorCode *EscaperError) {
+    if (NULL == escaper) {
+        *EscaperError = ESCAPER_INVALID_PARAMETER;
+        return UNKNOWN;
+    }
+
+    *EscaperError = ESCAPER_SUCCESS;
+    return escaper->FacultyOfEscaper;
+}
+
+int escaperGetSkillLevel(Escaper escaper, EscaperErrorCode *EscaperError) {
+    if (NULL == escaper) {
+        *EscaperError = ESCAPER_INVALID_PARAMETER;
+        return INVALID_PARAMETER;
+    }
+
+    *EscaperError = ESCAPER_SUCCESS;
+    return escaper->skill_level;
+}
+
 static bool checkEscaperArgs (char *escaper_email, int skill_level,
                               TechnionFaculty FacultyOfEscaper) {
     if (!isEmailValid(escaper_email)) {
