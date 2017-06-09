@@ -161,6 +161,7 @@ Room companyFindRoom(Company company, int room_id,
     }
 
     Room room_iterator = setGetFirst(company->company_rooms);
+    //TODO should we check NULL?
     while (NULL != room_iterator) {
         RoomErrorCode RoomError;
         bool isEqual = isRoomID(room_iterator, room_id, &RoomError);
@@ -177,6 +178,20 @@ Room companyFindRoom(Company company, int room_id,
 
     *CompanyError = COMPANY_ROOM_DOES_NOT_EXIST;
     return NULL;
+}
+
+bool isCompanyEmailEqual(Company company, char *email,
+                         CompanyErrorCode *CompanyError) {
+    if (NULL == company || NULL == email) {
+        *CompanyError = COMPANY_INVALID_PARAMETER;
+        return false;
+    }
+    *CompanyError = COMPANY_SUCCESS;
+
+    if (strcmp(company->email, email) == 0) {
+        return true;
+    }
+    return false;
 }
 
 

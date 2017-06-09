@@ -23,11 +23,28 @@ typedef struct EscapeTechnion_t *EscapeTechnion;
  */
 EscapeTechnion escapeTechnionCreate(MtmErrorCode *EscapeTechnionError);
 
+/**
+ * receives an escapeTechnion type and destroys it, including releasing all
+ * allocated memory from internal fields
+ * @param escapeTechnion - the type to be destroyed
+ * @return MTM_SUCCESS - if the function worked ok
+ *         MTM_NULL_PARAMETER - if the argument was NULL
+ */
+MtmErrorCode escapeTechnionDestroy(EscapeTechnion escapeTechnion);
 
-
-
-
-
+/**
+ * receives an escapeTechnion type system and details of a company and creates
+ * a new company with suitable details within the system
+ * @param escapeTechnion - the system to create the company in
+ * @param email - the email of the company to be created
+ * @param Faculty - the faculty of the company to be created
+ * @return MTM_SUCCESS - if the function succeeded
+ *         MTM_INVALID_PARAMETER - if one of the parameters was incompatible
+ *         MTM_MEMORY_PROBLEM - if the allocations failed
+ *         MTM_EMAIL_ALREADY_EXISTS - if the email is already in use
+ */
+MtmErrorCode escapeTechnionAddCompany(EscapeTechnion escapeTechnion,
+                                      char *email, TechnionFaculty Faculty);
 
 
 

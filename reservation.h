@@ -80,5 +80,30 @@ void reservationFreeElement(ListElement reservation);
  */
 ListElement reservationCopyElement(ListElement src_reservation);
 
+/**
+ * receives a reservation and an email address and checks if the email is listed
+ * in the reservation as the company's email
+ * @param reservation - the reservation to check
+ * @param company_email - the email of the company to compare
+ * @param ReservationError - a type to hold the result of the function
+ * @return true - if the emails are equal
+ *         false - if the emails are not equal
+ */
+bool isReservationCompanyEmailEqual(Reservation reservation,
+                                    char *company_email,
+                                    ReservationErrorCode *ReservationError);
+
+/**
+ * receives a reservation and an email address and checks if the email is listed
+ * in the reservation as the escaper's email
+ * @param reservation - the reservation to check
+ * @param escaper_email - the email of the escaperto compare
+ * @param ReservationError - a type to hold the result of the function
+ * @return true - if the emails are equal
+ *         false - if the emails are not equal
+ */
+bool isReservationEscaperEmailEqual(Reservation reservation,
+                                    char *escaper_email,
+                                    ReservationErrorCode *ReservationError);
 
 #endif //HW3_RESERVATION_H

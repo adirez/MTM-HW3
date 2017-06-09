@@ -137,6 +137,18 @@ int escaperGetSkillLevel(Escaper escaper, EscaperErrorCode *EscaperError) {
     return escaper->skill_level;
 }
 
+bool isEscaperWithEmail(Escaper escaper, char *email) {
+    if (NULL == escaper || NULL == email) {
+        return false;
+    }
+    if (strcmp(escaper->escaper_email, email) == 0) {
+        return true;
+    }
+    return false;
+}
+
+
+
 static bool checkEscaperArgs (char *escaper_email, int skill_level,
                               TechnionFaculty FacultyOfEscaper) {
     if (!isEmailValid(escaper_email)) {

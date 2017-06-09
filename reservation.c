@@ -145,6 +145,36 @@ ListElement reservationCopyElement(ListElement src_reservation) {
     return reservation;
 }
 
+bool isReservationCompanyEmailEqual(Reservation reservation,
+                                    char *company_email,
+                                    ReservationErrorCode *ReservationError) {
+    if (NULL == reservation || NULL == company_email) {
+        *ReservationError = RESERVATION_INVALID_PARAMETER;
+        return false;
+    }
+    *ReservationError = RESERVATION_SUCCESS;
+
+    if (strcmp(reservation->company_email, company_email) == 0) {
+        return true;
+    }
+    return false;
+}
+
+bool isReservationEscaperEmailEqual(Reservation reservation,
+                                    char *escaper_email,
+                                    ReservationErrorCode *ReservationError) {
+    if (NULL == reservation || NULL == escaper_email) {
+        *ReservationError = RESERVATION_INVALID_PARAMETER;
+        return false;
+    }
+    *ReservationError = RESERVATION_SUCCESS;
+
+    if (strcmp(reservation->escaper_email, escaper_email) == 0) {
+        return true;
+    }
+    return false;
+}
+
 static bool checkReservationArgs(char *escaper_email, char *company_email,
                                  TechnionFaculty FacultyOfEscaper,
                                  TechnionFaculty FacultyOfRoom, int room_id,

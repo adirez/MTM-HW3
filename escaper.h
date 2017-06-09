@@ -93,11 +93,20 @@ TechnionFaculty escaperGetFaculty(Escaper escaper,
                                   EscaperErrorCode *EscaperError);
 
 /**
- * receives an escaper and returns his skill level in escape rooms
- * @param escaper - the requested escaper to be checked
- * @param EscaperError - a type to get the result of the function
- * @return the skill level of the escaper or INVALID if an error was found
+ * receives an escaper and checks if his email is equal to an email received
+ * through the parameters
+ * @param escaper - the escaper to be checked
+ * @param email - the email to compare
+ * @return true - if the escaper's email equals 'email'
+ *         false - if the emails are different
  */
 int escaperGetSkillLevel(Escaper escaper, EscaperErrorCode *EscaperError);
 
+/**
+ *
+ * @param escaper
+ * @param email
+ * @return
+ */
+bool isEscaperWithEmail(Escaper escaper, char *email);
 #endif //HW3_ESCAPER_H

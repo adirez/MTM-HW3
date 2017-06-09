@@ -142,4 +142,16 @@ TechnionFaculty companyGetFaculty(Company company,
 Room companyFindRoom(Company company, int room_id,
                      CompanyErrorCode *CompanyError);
 
+/**
+ * receives a company and checks if it's email is equal to an email received
+ * through the parameters
+ * @param company - the company to be checked
+ * @param email - the email to compare
+ * @param CompanyError - a type to hold the result of the function
+ * @return true - if the company's email equals 'email'
+ *         false - if the emails are different
+ */
+bool isCompanyEmailEqual(Company company, char *email,
+                         CompanyErrorCode *CompanyError);
+
 #endif //ESCAPETECHNION_COMPANY_H
